@@ -38,7 +38,7 @@ function App() {
         <header className="app-header fade-in-down">
           <div className="logo flex-center gap-2">
             <div className="icon-wrap"><ChefHat size={32} className="text-primary"/></div>
-            <h1>AI <span className="text-gradient">Recipe Genius</span></h1>
+            <h1>AI <span className="text-gradient">RecipeGenie</span></h1>
           </div>
           <p>Transform your ingredients or food images into delicious meals!</p>
         </header>
