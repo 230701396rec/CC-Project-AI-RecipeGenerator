@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { UploadCloud, Image as ImageIcon, Loader } from 'lucide-react';
-import { uploadImage } from '../api';
+import { generateRecipeFromImage } from '../api';
 
-export default function ImageUploader({ setIngredients, appendIngredients }) {
+export default function ImageUploader({ onImageGenerated }) {
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState(null);
   const fileInputRef = useRef(null);
@@ -11,17 +11,16 @@ export default function ImageUploader({ setIngredients, appendIngredients }) {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Create a preview
     const reader = new FileReader();
     reader.onload = (ev) => setPreview(ev.target.result);
     reader.readAsDataURL(file);
 
     setIsUploading(true);
     try {
-      const data = await uploadImage(file);
-      appendIngredients(data.detected_ingredients);
+      const data = await generateRecipeFromImage(file);
+      onImageGenerated(data);
     } catch (err) {
-      alert("Error analyzing image: " + err.message);
+      alert("Error generating recipe from image: " + err.message);
     } finally {
       setIsUploading(false);
     }

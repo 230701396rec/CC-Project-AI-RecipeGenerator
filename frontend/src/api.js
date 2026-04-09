@@ -1,27 +1,28 @@
 export const API_BASE_URL = "http://localhost:8000";
 
-export const uploadImage = async (file) => {
+export const generateRecipeFromImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch(`${API_BASE_URL}/analyze-image`, {
+  const response = await fetch(`${API_BASE_URL}/image-to-recipe`, {
     method: "POST",
     body: formData,
   });
 
   if (!response.ok) {
-    throw new Error("Failed to analyze image");
+    throw new Error("Failed to process image");
   }
   return response.json();
 };
 
 export const generateRecipe = async (ingredients) => {
+  const ingredientsStr = Array.isArray(ingredients) ? ingredients.join(", ") : ingredients;
   const response = await fetch(`${API_BASE_URL}/generate-recipe`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ ingredients }),
+    body: JSON.stringify({ ingredients: ingredientsStr }),
   });
 
   if (!response.ok) {

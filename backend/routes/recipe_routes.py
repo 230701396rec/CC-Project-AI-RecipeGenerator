@@ -6,7 +6,7 @@ import json
 from models.schemas import RecipeGenerationRequest, RecipeResponse
 from models.database import get_db, RecipeDB
 from utils.text_cleaning import clean_ingredients
-from ml_service.llm_engine import generate_recipe_from_ingredients
+from ml_service.mistral_engine import generate_recipe as generate_recipe_from_ingredients
 
 router = APIRouter()
 
