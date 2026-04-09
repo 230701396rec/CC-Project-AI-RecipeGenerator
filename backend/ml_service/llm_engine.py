@@ -5,13 +5,15 @@ import base64
 from dotenv import load_dotenv
 from mistralai.client import Mistral
 from models.schemas import RecipeResponse
+from io import BytesIO
+from PIL import Image
 
 load_dotenv()
 
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 MISTRAL_API_URL = os.getenv("MISTRAL_API_URL")
 
-client = Mistral(api_key=MISTRAL_API_KEY, server_url=MISTRAL_API_URL) if MISTRAL_API_KEY else None
+client = Mistral(api_key=MISTRAL_API_KEY, server_url=MISTRAL_API_URL, timeout_ms=60000) if MISTRAL_API_KEY else None
 
 def extract_ingredients(caption: str) -> str:
     """Extract ingredients from image caption."""
@@ -22,7 +24,7 @@ def extract_ingredients(caption: str) -> str:
         
     try:
         response = client.chat.complete(
-            model="open-mistral-7b",
+            model="mistral-small-latest",
             messages=[
                 {
                     "role": "user",
@@ -48,7 +50,7 @@ Return ONLY valid JSON in this format:
 {{
   "name": "",
   "ingredients_list": ["String format only (e.g., '1 cup of milk')"],
-  "instructions": [],
+  "instructions": ["String format only (e.g., 'Step 1: Chop the onions.')"],
   "cook_time": "",
   "nutrition": {{
     "calories": "",
@@ -71,7 +73,7 @@ Return ONLY valid JSON in this format:
 
     try:
         response = client.chat.complete(
-            model="open-mistral-7b",
+            model="mistral-small-latest",
             messages=[
                 {
                     "role": "user",
@@ -113,9 +115,19 @@ def generate_image_caption(image_bytes: bytes) -> str:
         return "a photo of a delicious meal with various ingredients"
         
     try:
-        encoded_image = base64.b64encode(image_bytes).decode('utf-8')
+        # Resize and compress image
+        img = Image.open(BytesIO(image_bytes))
+        if img.mode != "RGB":
+            img = img.convert("RGB")
+        img.thumbnail((800, 800))
+        
+        buffer = BytesIO()
+        img.save(buffer, format="JPEG", quality=85)
+        compressed_bytes = buffer.getvalue()
+        
+        encoded_image = base64.b64encode(compressed_bytes).decode('utf-8')
         response = client.chat.complete(
-            model="pixtral-12b-2409",
+            model="mistral-small-latest",
             messages=[
                 {
                     "role": "user",

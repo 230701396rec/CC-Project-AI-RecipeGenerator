@@ -40,7 +40,7 @@ function App() {
             <div className="icon-wrap"><ChefHat size={32} className="text-primary" /></div>
             <h1>AI <span className="text-gradient">RecipeGenie</span></h1>
           </div>
-          <p>Transform your ingredients or food images into delicious meals using BLIP & Mistral!</p>
+          <p>Transform your ingredients or food images into delicious meals!</p>
         </header>
 
         {!recipeData && !isGenerating && (
