@@ -3,8 +3,11 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime
 
-# Flexible database path for Azure (e.g. /home/site/wwwroot/recipes.db)
-db_path = os.getenv("DATABASE_PATH", "/home/site/wwwroot/recipes.db")
+# Flexible database path (persistent in Azure, local otherwise)
+if "WEBSITE_HOSTNAME" in os.environ:
+    db_path = os.getenv("DATABASE_PATH", "/home/site/wwwroot/recipes.db")
+else:
+    db_path = os.getenv("DATABASE_PATH", "recipes.db")
 DATABASE_URL = f"sqlite:///{os.path.abspath(db_path)}"
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})

@@ -4,7 +4,7 @@ import re
 import base64
 from dotenv import load_dotenv
 from mistralai.client import Mistral
-from backend.models.schemas import RecipeResponse
+from models.schemas import RecipeResponse
 from io import BytesIO
 from PIL import Image
 

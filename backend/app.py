@@ -3,8 +3,8 @@ load_dotenv()
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routes import image_routes, recipe_routes
-from backend.models.database import init_db
+from routes import image_routes, recipe_routes
+from models.database import init_db
 
 # Initialize database
 init_db()
