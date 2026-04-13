@@ -5,7 +5,8 @@ from datetime import datetime
 
 # Flexible database path (persistent in Azure, local otherwise)
 if "WEBSITE_HOSTNAME" in os.environ:
-    db_path = os.getenv("DATABASE_PATH", "/home/site/wwwroot/recipes.db")
+    # Use /home which is always writable in Azure App Service Linux
+    db_path = os.getenv("DATABASE_PATH", "/home/recipes.db")
 else:
     db_path = os.getenv("DATABASE_PATH", "recipes.db")
 DATABASE_URL = f"sqlite:///{os.path.abspath(db_path)}"
