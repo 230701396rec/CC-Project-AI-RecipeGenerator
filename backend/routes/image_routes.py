@@ -1,8 +1,8 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from sqlalchemy.orm import Session
-from ml_service.llm_engine import extract_ingredients, generate_recipe, generate_image_caption
-from models.schemas import ImageToRecipeResponse
-from models.database import get_db, RecipeDB
+from backend.ml_service.llm_engine import extract_ingredients, generate_recipe, generate_image_caption
+from backend.models.schemas import ImageToRecipeResponse
+from backend.models.database import get_db, RecipeDB
 import json
 
 router = APIRouter()

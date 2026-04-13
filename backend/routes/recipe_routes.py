@@ -3,10 +3,10 @@ from sqlalchemy.orm import Session
 from typing import List
 import json
 
-from models.schemas import RecipeGenerationRequest, RecipeResponse
-from models.database import get_db, RecipeDB
-from utils.text_cleaning import clean_ingredients
-from ml_service.llm_engine import generate_recipe_from_ingredients
+from backend.models.schemas import RecipeGenerationRequest, RecipeResponse
+from backend.models.database import get_db, RecipeDB
+from backend.utils.text_cleaning import clean_ingredients
+from backend.ml_service.llm_engine import generate_recipe_from_ingredients
 
 router = APIRouter()
 
